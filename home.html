@@ -1,0 +1,51 @@
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Display Country State City using Google API</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="custom.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyBdwSwhGOrT-1E4UTsXi4d83oYeywHH1y0"></script>
+<script> 
+console.log(country);
+var countryoption="";
+function drawCountry(){
+	var ele=document.getElementById("ownCountry");
+	$.each(country, function (index, value) {
+                    // APPEND OR INSERT DATA TO SELECT ELEMENT.
+                    $('#country').append('<option value="' + value.isoCode + '">' + value.name + '</option>');
+                });
+}
+function drawstate(val){
+	//console.log(value);
+	countryoption=val;
+	$('#state').html('<option>--Select States--</option>');
+	$('#city').html('<option>--Select City--</option>');
+	$.each(state, function (index, value) {
+                    // APPEND OR INSERT DATA TO SELECT ELEMENT.
+                    if(value.countryCode==val){$('#state').append('<option value="' + value.isoCode + '" data-country="'+value.countryCode+'">' + value.name + '</option>');}
+                });
+}
+function drawcity(val){
+	//console.log(value);
+	$('#city').html('<option>--Select City--</option>');
+	//$('#city').html('<option>--Select States--</option>')
+	$.each(city, function (index, value) {
+                    // APPEND OR INSERT DATA TO SELECT ELEMENT.
+                    if(value.stateCode==val && countryoption==value.countryCode){$('#city').append('<option value="' + value.name + '">' + value.name + '</option>');}
+                });
+}
+</script>
+</head>
+<body onload="drawCountry()">
+<div class="form-group">
+
+<select id="country" onchange="drawstate(value)"></select>	
+<select id="state" onchange="drawcity(value)"></select>	
+<select id="city" ></select>	
+    </div>
+</div>
+</body>
+</html>
